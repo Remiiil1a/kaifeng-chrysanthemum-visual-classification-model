@@ -1,0 +1,54 @@
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# ---------- 虚拟环境 ----------
+.venv/
+venv/
+env/
+
+# ---------- Ultralytics 运行时 ----------
+# 配置与缓存目录，由 code/common.py 的 setup_env() 指向项目内
+.yolo_config/
+# 只在仓库根目录忽略 runs/（训练产物统一放 results/runs/，那一个要保留目录骨架）
+/runs/
+*.cache
+*.tmp
+
+# ---------- 模型权重 ----------
+# 预训练权重与训练产物体积大，不进版本库；
+# 交付时按任务书 15.2 节把 best.pt 放进 results/runs/chrys_yolo26n/weights/
+*.pt
+*.onnx
+*.engine
+*.torchscript
+
+# ---------- 数据集图片 ----------
+# 默认不把照片纳入版本库：450 张 × 300KB~2MB 会让仓库膨胀到数百 MB，
+# 而任务书的交付物是 ZIP 压缩包，不是 git 仓库。
+# 目录结构靠各级 .gitkeep 保留，clone 后即可直接放图。
+# 若确实需要把图片纳入版本库，删除下面三行即可。
+train/**/*.jpg
+val/**/*.jpg
+test/**/*.jpg
+train/**/*.jpeg
+val/**/*.jpeg
+test/**/*.jpeg
+train/**/*.png
+val/**/*.png
+test/**/*.png
+
+# 原始照片库：仅作本地备份，永不入库
+_raw/*
+!_raw/.gitkeep
+
+# ---------- 系统与编辑器 ----------
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp

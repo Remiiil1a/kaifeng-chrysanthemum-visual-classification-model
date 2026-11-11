@@ -1,0 +1,31 @@
+# 开封菊花视觉分类 —— 依赖清单
+#
+# 安装顺序很重要：先装 PyTorch，再装 Ultralytics。顺序反了会装错 CUDA 版本
+# （任务书 10.3 节）。
+#
+# 有 NVIDIA 显卡（CUDA 12.1 示例）：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#   pip install -r code/requirements.txt
+#
+# 只有 CPU：
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r code/requirements.txt
+#
+# 版本号全部固定，否则别人装到新版本可能行为不同（任务书 15.2 节）。
+# 装好环境后建议重新生成一次，锁定本机实际版本：
+#   pip freeze > code/requirements.txt
+
+# ---- 深度学习框架 ----
+# torch / torchvision 由上面的 --index-url 命令单独安装，此处不重复声明，
+# 避免 pip 从 PyPI 拉到不带 CUDA 的版本覆盖掉。
+# 本机验证版本：torch 2.15.0 / torchvision 0.29.2
+
+# ---- 训练框架 ----
+ultralytics==8.4.210
+
+# ---- 图像与数据处理 ----
+pillow==13.0.0
+numpy==2.5.4
+opencv-python==5.0.0.93
+matplotlib==3.11.2
+pandas==3.1.1
