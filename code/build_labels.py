@@ -19,7 +19,15 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common import LABEL_FIELDS, LABELS_CSV, ROOT, SPLITS, iter_images, rel  # noqa: E402
+from common import (  # noqa: E402
+    LABEL_FIELDS,
+    LABELS_CSV,
+    RAW_DIR,
+    ROOT,
+    SPLITS,
+    iter_images,
+    rel,
+)
 
 try:
     from PIL import Image
@@ -70,6 +78,22 @@ def read_exif(path: Path) -> dict | None:
         return None
 
 
+def load_plant_map(raw_dir: Path) -> dict[str, str]:
+    """从 _raw/{类别}/{植株}/{图片} 读出每张图的真实植株归属。
+
+    这是最可靠的 plant_id 来源——直接读采集时人工分好的植株目录，
+    不靠序号推断。返回 {文件名: 植株编号}。
+    """
+    mapping: dict[str, str] = {}
+    if not raw_dir.is_dir():
+        return mapping
+    for cat_dir in sorted(d for d in raw_dir.iterdir() if d.is_dir()):
+        for plant_dir in sorted(d for d in cat_dir.iterdir() if d.is_dir()):
+            for img in iter_images(plant_dir):
+                mapping[img.name] = plant_dir.name
+    return mapping
+
+
 def infer_plant_id(filename: str, rule: str, per_plant: int) -> str:
     """推断植株编号。
 
@@ -91,10 +115,15 @@ def infer_plant_id(filename: str, rule: str, per_plant: int) -> str:
 
 
 def build_labels(
-    root: Path, out_csv: Path, plant_rule: str, per_plant: int
+    root: Path,
+    out_csv: Path,
+    plant_rule: str,
+    per_plant: int,
+    plant_map: dict[str, str] | None = None,
 ) -> tuple[int, list[str]]:
     rows: list[dict] = []
     missing: list[str] = []
+    plant_map = plant_map or {}
 
     for split in SPLITS:
         split_dir = root / split
@@ -107,12 +136,16 @@ def build_labels(
                 if info is None:
                     missing.append(f"{split}/{cat_dir.name}/{img.name}")
                     continue
+                # 优先用 _raw 里的真实植株目录，读不到才退回序号推断
+                plant_id = plant_map.get(img.name) or infer_plant_id(
+                    img.name, plant_rule, per_plant
+                )
                 rows.append(
                     {
                         "filename": img.name,
                         "split": split,
                         "category": cat_dir.name,
-                        "plant_id": infer_plant_id(img.name, plant_rule, per_plant),
+                        "plant_id": plant_id,
                         "latitude": info["latitude"],
                         "longitude": info["longitude"],
                         "altitude": info["altitude"],
@@ -142,12 +175,25 @@ def main(argv: list[str] | None = None) -> None:
         help="plant_id 推断规则：seq 按序号区间，none 留空待手工补填",
     )
     parser.add_argument(
-        "--per-plant", type=int, default=9, help="每株拍摄张数，用于 seq 规则"
+        "--per-plant", type=int, default=6, help="每株拍摄张数，用于 seq 规则"
+    )
+    parser.add_argument(
+        "--raw",
+        default=str(RAW_DIR),
+        help="原始照片库（含 类别/植株/），从中读取真实 plant_id",
     )
     args = parser.parse_args(argv)
 
     out_csv = Path(args.out)
-    count, missing = build_labels(Path(args.root), out_csv, args.plant_rule, args.per_plant)
+    plant_map = load_plant_map(Path(args.raw))
+    if plant_map:
+        print(f"从 {rel(Path(args.raw))} 读到 {len(plant_map)} 张图的植株归属")
+    else:
+        print(f"[提示] {rel(Path(args.raw))} 不可用，plant_id 改用序号推断")
+
+    count, missing = build_labels(
+        Path(args.root), out_csv, args.plant_rule, args.per_plant, plant_map
+    )
 
     print(f"已写出 {rel(out_csv)}，共 {count} 条记录")
     if missing:

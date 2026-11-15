@@ -30,13 +30,13 @@ CATEGORIES = [
     "01_huangse_pingban",
     "02_baise_guanban",
     "03_lvse_jiban",
-    "04_fense_lianzuo",
+    "04_fense_pingban",
     "05_hongse_qiuxing",
     "06_fuse_feiwu",
     "07_huangse_guanban",
-    "08_baise_pingban",
-    "09_zise_chiban",
-    "10_shuangse_tuogui",
+    "08_fense_chiban",
+    "09_huangse_qiuxing",
+    "10_hongse_sheban",
 ]
 
 IMAGES_PER_CATEGORY = 30

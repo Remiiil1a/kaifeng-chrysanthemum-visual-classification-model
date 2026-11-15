@@ -37,57 +37,91 @@
 
 ## 二、数据集概述与类别说明
 
-> 状态：**类别方案已定框架，采集后补充分布统计**。
+> 状态：**已采集完成，480 张，10 类 × 48 张**。
 
 ### 2.1 概况
 
 | 项目 | 内容 |
 | --- | --- |
 | 类别数 | 10 |
-| 总张数 | 待采集（目标 450 张，每类 45 张） |
-| 采集时间 | 待填 |
-| 采集地点 | 待填（开封市，约 34.7—34.9°N，114.2—114.4°E） |
-| 拍摄设备 | 待填（手机后置主摄，关闭美颜/水印/滤镜） |
-| 划分比例 | 训练 : 验证 : 测试 = 8 : 1 : 1（每类 36 / 4 / 5 张） |
+| 总张数 | 480（每类 48 张） |
+| 采集时间 | 2026-11-12 16:23—17:50 |
+| 采集地点 | 开封（铁塔公园展区），约 34.8159—34.8169°N，114.3625—114.3650°E |
+| 拍摄设备 | iQOO 13（216 张）、iQOO Z10 Turbo（264 张） |
+| 图像规格 | 长边 2048，JPG，质量 94，4:4:4 子采样 |
+| 色彩空间 | sRGB（原图为 Display P3，已转换） |
+| GPS 完整率 | 480/480 = 100% |
+| 划分比例 | 训练 : 验证 : 测试 = 360 : 60 : 60（每类 36 / 6 / 6） |
+| 植株数 | 每类 8 株，每株 6 张（对应 6 个拍摄位） |
 
 ### 2.2 类别说明
 
-划分依据为**花色 + 瓣型**的组合维度（任务书 4.1 节推荐做法）。两位序号保证
+划分依据为**花色 + 瓣型/花型**的组合维度（任务书 4.1 节推荐做法）。两位序号保证
 文件夹名字母序即序号序，从而 YOLO 的类别索引稳定可预判（任务书 11.2 节）。
 
 | 序号 | 文件夹名 | 中文类别名 | 划分依据 | 样本数量 |
 | --- | --- | --- | --- | --- |
-| 01 | `01_huangse_pingban` | 黄色平瓣 | 花色=黄，瓣型=平瓣 | 待采集 |
-| 02 | `02_baise_guanban` | 白色管瓣 | 花色=白，瓣型=管瓣 | 待采集 |
-| 03 | `03_lvse_jiban` | 绿色畸瓣 | 花色=绿，瓣型=畸瓣 | 待采集 |
-| 04 | `04_fense_lianzuo` | 粉色莲座 | 花色=粉，花型=莲座 | 待采集 |
-| 05 | `05_hongse_qiuxing` | 红色球型 | 花色=红，花型=球型 | 待采集 |
-| 06 | `06_fuse_feiwu` | 复色飞舞 | 花色=复色，花型=飞舞 | 待采集 |
-| 07 | `07_huangse_guanban` | 黄色管瓣 | 花色=黄，瓣型=管瓣 | 待采集 |
-| 08 | `08_baise_pingban` | 白色平瓣 | 花色=白，瓣型=平瓣 | 待采集 |
-| 09 | `09_zise_chiban` | 紫色匙瓣 | 花色=紫，瓣型=匙瓣 | 待采集 |
-| 10 | `10_shuangse_tuogui` | 双色托桂 | 花色=双色，花型=托桂 | 待采集 |
+| 01 | `01_huangse_pingban` | 黄色平瓣 | 花色=黄，瓣型=平瓣 | 48 |
+| 02 | `02_baise_guanban` | 白色管瓣 | 花色=白，瓣型=管瓣 | 48 |
+| 03 | `03_lvse_jiban` | 绿色畸瓣 | 花色=绿，瓣型=畸瓣 | 48 |
+| 04 | `04_fense_pingban` | 粉色平瓣 | 花色=粉，瓣型=平瓣 | 48 |
+| 05 | `05_hongse_qiuxing` | 红色球型 | 花色=红，花型=球型 | 48 |
+| 06 | `06_fuse_feiwu` | 复色飞舞 | 花色=复色，花型=飞舞 | 48 |
+| 07 | `07_huangse_guanban` | 黄色管瓣 | 花色=黄，瓣型=管瓣 | 48 |
+| 08 | `08_fense_chiban` | 粉色匙瓣 | 花色=粉，瓣型=匙瓣 | 48 |
+| 09 | `09_huangse_qiuxing` | 黄色球型 | 花色=黄，花型=球型 | 48 |
+| 10 | `10_hongse_sheban` | 红色舌瓣 | 花色=红，瓣型=舌瓣 | 48 |
 
-**注意**：上表为任务书 4.2 节给出的示例方案。实际类别必须以展区标牌为准，
-采集前逐类核对、必要时替换（任务书：不得凭印象编造品种名）。替换后需同步
-修改：三个子集下的文件夹名、本表、以及已生成的 `labels.csv`。
+**与任务书示例方案的差异**：任务书 4.2 节给的是示例，允许按展区实际调整。
+本组有 4 类不同——粉色平瓣（示例为粉色莲座）、粉色匙瓣（示例为白色平瓣）、
+黄色球型（示例为紫色匙瓣）、红色舌瓣（示例为双色托桂）。原因是部分示例品种
+在展区没有找到或形态难以稳定辨别，改用现场能可靠区分的类别。详见
+[类别方案](docs/category_scheme.md)。
 
 ### 2.3 按植株与拍摄位的分布
 
-> 状态：**待采集**。任务书 5.3 节要求每类覆盖 6 个拍摄位、3—5 株不同植株。
+每类 8 株 × 6 张 = 48 张。6 张对应任务书 5.3 节的 6 个拍摄位：
 
-| 拍摄位 | 每类目标张数 | 小计（10 类） |
+| 拍摄位 | 每株张数 | 每类小计 | 10 类合计 |
+| --- | --- | --- | --- |
+| 正面平视 | 1 | 8 | 80 |
+| 45° 斜俯视 | 1 | 8 | 80 |
+| 正俯视 | 1 | 8 | 80 |
+| 侧面 90° | 1 | 8 | 80 |
+| 近距特写 | 1 | 8 | 80 |
+| 整株环境 | 1 | 8 | 80 |
+| 合计 | 6 | 48 | 480 |
+
+植株分布：每类 P01—P08 共 8 株，每株 6 张。`plant_id` 直接取自采集时的
+植株目录（`_raw/{类别}/{植株}/`），不是靠序号推断。
+
+### 2.4 图像预处理说明
+
+原图为 3072×4096 / 4096×3072、Display P3、单张 2.6—7.9 MB，合计 2.1 GB。
+按任务书要求做了四项处理（脚本见 [convert_photos.py](code/convert_photos.py)）：
+
+| 处理 | 原因 | 结果 |
 | --- | --- | --- |
-| 正面平视 | 8 | 80 |
-| 45° 斜俯视 | 10 | 100 |
-| 正俯视 | 6 | 60 |
-| 侧面 90° | 6 | 60 |
-| 近距特写 | 8 | 80 |
-| 整株环境 | 7 | 70 |
-| 合计 | 45 | 450 |
+| Display P3 → sRGB | 训练库（PIL/torchvision）不读 ICC，会把 P3 数值当 sRGB 用，颜色失真 | 480 张全部转换 |
+| 横屏 → 竖屏 | 98 张横屏集中在 6 个类别（4 个类别一张都没有），模型会学到"横屏=某类"的伪特征 | 98 张旋转 90° |
+| 绿色畸瓣居中裁 1/2 | 该类绿色花头平均只占画面 8%，周围全是粉/紫/黄其他品种，模型会学到"粉色背景=绿色畸瓣" | 48 张裁剪，占比升到 20% |
+| 长边缩到 2048 | 任务书要求 1024—2048；原图 4080—4096 过大 | 全部 2048 |
 
-植株分布：每类建议 3—5 株，每株 9—15 张；`_raw/` 下按 `P01`、`P02` 编号
-登记，划分时以植株为单位整体分配集合（见 `code/prepare_dataset.py split`）。
+**关于尺寸**：绿色畸瓣裁 1/2 后长边正好从 4096 降到 2048，不需要再缩放——
+少一次重采样，画质更好。其余类别直接缩放到 2048。
+
+**关于 HDR**：已检查全部 480 张，均为 SOF0 baseline、8-bit/通道、3 分量，
+无 Ultra HDR 增益图（APP2 无 21496/MPF 标记），无 PQ/HLG 传输函数。
+**没有 HDR 图片**，因此不需要色调映射。
+
+**关于压缩**：质量 94 + 4:4:4 子采样（不做色度降采样），PSNR 45.6 dB，
+480 张共 438 MB，在任务书 500 MB 上限内。质量 95 会到 488 MB，加上权重与
+图表会逼近上限；质量 90 只有 327 MB 但 PSNR 掉到 43.9 dB，花瓣边缘的细微
+色差开始丢失。EXIF（GPS、拍摄时间、设备型号）与 ICC 全部保留。
+
+**关于横屏**：98 张横屏集中在每株的第 4—6 张，对应"侧面 90°、近距特写、
+整株环境"三个拍摄位——拍侧面时自然会横握手机。旋转后花头方向与竖屏图
+不一致（侧躺），但分类任务对旋转不敏感，训练时还有 `RandomHorizontalFlip`。
 
 ---
 
@@ -183,7 +217,7 @@ YOLO_CONFIG_DIR     : ...\.yolo_config
 | 优化器与学习率 | `auto`（框架自选，`lr0` 被忽略） |
 | 训练轮数 | 50（`patience=15` 早停） |
 
-选择理由：样本量 450 张属小数据集，n 规模足以拟合，训练最快；224 是
+选择理由：样本量 480 张属小数据集，n 规模足以拟合，训练最快；224 是
 ImageNet 预训练尺寸，省时且与迁移学习匹配。若与别组撞车，优先改
 `model` 与 `imgsz`——这两项对指纹影响最直接（任务书 3.3 节要求至少三项不同）。
 
@@ -300,10 +334,13 @@ python code/compare_datasets.py D:\path\to\other_group\train
 
 已知的结构性局限（框架阶段即可预见）：
 
-- 每类 45 张属小样本，细粒度分类对形态相近的类别（如 `07_huangse_guanban`
+- 每类 48 张属小样本，细粒度分类对形态相近的类别（如 `07_huangse_guanban`
   与 `01_huangse_pingban`）容易混淆；
 - 单一展区、单一时段拍摄，模型可能学到展区背景特征而非花的特征；
-- 10 类样本较少时 top5 准确率会很快接近 1.0，参考价值有限，主指标应看 top1。
+- 10 类样本较少时 top5 准确率会很快接近 1.0，参考价值有限，主指标应看 top1；
+- **绿色畸瓣构图偏弱**：该类绿色花头原本平均只占画面 8%，已通过居中裁 1/2
+  提升到 20%，但仍有 8/48 张低于 10%。这是采集时的构图问题，裁剪只能缓解
+  不能根治——如果重做，应靠近拍摄让花头占画面 1/2 以上。
 
 ---
 
@@ -328,6 +365,7 @@ kaifeng-chrysanthemum-visual-classification-model/
 │   ├── check_env.py             # 环境自检
 │   ├── compare_datasets.py      # 组间 dHash 相似度核查
 │   ├── prepare_dataset.py       # 重命名 / 去重 / 按植株划分
+│   ├── convert_photos.py        # P3→sRGB、横屏转竖屏、缩放重编码
 │   ├── selftest.py              # 用合成图片跑通全流程的开发自测
 │   └── requirements.txt         # 固定版本依赖
 ├── results/                     # 训练日志、图表、评估结果
@@ -348,9 +386,9 @@ kaifeng-chrysanthemum-visual-classification-model/
 | 场景 | 命令 |
 | --- | --- |
 | 环境自检 | `python code/check_env.py` |
-| 批量重命名原图 | `python code/prepare_dataset.py rename --src _raw/01_huangse_pingban` |
-| 去重 | `python code/prepare_dataset.py dedupe --src _raw/01_huangse_pingban` |
-| 按植株划分 | `python code/prepare_dataset.py split --src _raw/01_huangse_pingban --category 01_huangse_pingban --per-plant 9` |
+| 原图转换（P3→sRGB、横屏转竖屏、缩放） | `python code/convert_photos.py --src <原图目录>` |
+| 按植株目录重命名 | `python code/prepare_dataset.py rename-plants --src _raw` |
+| 按植株目录划分 | `python code/prepare_dataset.py split-plants --src _raw` |
 | 生成元数据表 | `python code/build_labels.py` |
 | 数据集自查 | `python code/check_dataset.py --strict` |
 | 训练 | `python code/train.py` |
@@ -358,6 +396,25 @@ kaifeng-chrysanthemum-visual-classification-model/
 | 预测 | `python code/predict.py test/01_huangse_pingban` |
 | 组间相似度 | `python code/compare_datasets.py <本组> <他组>` |
 | 开发自测 | `python code/selftest.py` |
+
+### A.2.1 从原图重建数据集的完整流程
+
+```powershell
+# 1. 转换：P3→sRGB、横屏转竖屏、长边 2048、质量 94
+python code/convert_photos.py --src "C:\Users\Administrator\Downloads\菊花"
+
+# 2. 重命名：{类别}_{三位序号}.jpg，解决跨植株重名
+python code/prepare_dataset.py rename-plants --src _raw
+
+# 3. 划分：整株分配，每类 6 株 train / 1 株 val / 1 株 test
+python code/prepare_dataset.py split-plants --src _raw
+
+# 4. 生成元数据表（plant_id 从 _raw 的植株目录读取）
+python code/build_labels.py
+
+# 5. 自查
+python code/check_dataset.py --strict
+```
 
 ### A.3 关于版本库与交付包的区别
 
@@ -386,7 +443,7 @@ train/  val/  test/  labels.csv  README.md  code/  results/
 python code/check_dataset.py --strict
 # 确认通过后，选中七项压缩（PowerShell 示例）
 Compress-Archive -Path train,val,test,labels.csv,README.md,code,results `
-  -DestinationPath "2025001_张三_菊花数据集_10类_450张.zip"
+  -DestinationPath "2025001_张三_菊花数据集_10类_480张.zip"
 ```
 
 打包前请核对 `docs/submission_checklist.md` 中的 28 项自检清单。
