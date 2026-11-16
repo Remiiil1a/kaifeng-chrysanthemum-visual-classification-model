@@ -127,7 +127,7 @@
 
 ## 三、环境配置
 
-> 状态：**配置步骤已定，`yolo checks` 截图待补充**。
+> 状态：**已在本机验证通过，GPU 训练管线跑通**（`yolo checks` 截图仍待补充）。
 
 ### 3.1 版本要求
 
@@ -135,10 +135,11 @@
 | --- | --- |
 | 操作系统 | Windows 11（10.0.26100） |
 | Python | 3.11 或 3.12 推荐（本机 3.14.7 亦可，ultralytics 8.4.210 声明支持至 3.15） |
-| PyTorch | 2.15.0（GPU 版需按 CUDA 版本选 index-url） |
-| torchvision | 0.29.2 |
+| PyTorch | **2.14.1+cu130** |
+| torchvision | **0.29.1+cu130** |
+| CUDA | **13.0**（`torch.version.cuda`） |
 | Ultralytics | 8.4.210 |
-| 显卡 | 待填（无独显时 `device: "cpu"`，训练约 40—60 分钟） |
+| 显卡 | **NVIDIA GeForce RTX 5060 Laptop GPU，7.9 GB 显存**（`torch.cuda.is_available()` = True） |
 
 ### 3.2 创建虚拟环境
 
@@ -157,8 +158,8 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 ### 3.3 安装依赖（顺序不可颠倒）
 
 ```powershell
-# 有 NVIDIA 显卡
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# 有 NVIDIA 显卡（本机 RTX 5060 Laptop）
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu130
 
 # 只有 CPU
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
@@ -166,6 +167,30 @@ pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 # 再装其余依赖
 pip install -r code/requirements.txt
 ```
+
+#### 为什么用 cu130，而不是任务书里的 cu121
+
+任务书 10.3 节给的示例是 `cu121`，**在本机装不上**。原因：
+
+RTX 5060 Laptop 是 Blackwell 架构，compute capability **12.0**，对应 PTX/SASS 目标
+**sm_120**。cu121 / cu124 / cu126 的 PyTorch 轮子编译时只含到 sm_90 的内核，
+没有 sm_120 的机器码。装上去 `import torch` 不报错，但
+`torch.cuda.is_available()` 返回 **False**，训练会静默退回 CPU——看起来"装好了"，
+实际没用上显卡。必须用 **cu130**（或更高）的轮子，它才带 sm_120 内核。
+
+验证方式：
+
+```powershell
+.venv\Scripts\python.exe -c "import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+# 期望：2.14.1+cu130 13.0 True NVIDIA GeForce RTX 5060 Laptop GPU
+```
+
+#### 关于系统里的 C:\cuDNN
+
+本机 `C:\cuDNN`（9.25）是给别的框架准备的，**对 PyTorch 无效**。PyTorch 的
+Windows 轮子自带 CUDA/cuDNN 运行时（打包在 `torch\lib\` 下），不读系统 PATH 里的
+cuDNN，也不需要单独装 CUDA Toolkit。所以不要为了"让 torch 用上 cuDNN"去改 PATH
+或复制 DLL——那样反而可能因为版本冲突导致加载失败。
 
 ### 3.4 环境变量
 
@@ -184,19 +209,36 @@ yolo checks
 ### 3.5 环境自检
 
 ```powershell
-python code/check_env.py
+.venv\Scripts\python.exe code\check_env.py
 ```
 
-预期输出（片段）：
+本机实际输出（2026-11-16）：
 
 ```
+========================================================
 Python 版本 : 3.14.7
-PyTorch     : 2.15.0
-CUDA 可用   : False
+解释器路径  : C:\Users\Administrator\Documents\kaifeng-chrysanthemum-visual-classification-model\.venv\Scripts\python.exe
+操作系统    : Windows-11-10.0.26100-SP0
+项目根目录  : .
+========================================================
+PyTorch     : 2.14.1+cu130
+CUDA 可用   : True
+CUDA 版本   : 13.0
+显卡        : NVIDIA GeForce RTX 5060 Laptop GPU
+显存        : 7.9 GB
+torchvision : 0.29.1+cu130
 Ultralytics : 8.4.210
 Pillow      : 13.0.0
-YOLO_CONFIG_DIR     : ...\.yolo_config
+--------------------------------------------------------
+YOLO_CONFIG_DIR     : (未设置)
+CUDA_VISIBLE_DEVICES: (未设置)
+OMP_NUM_THREADS     : 1
+========================================================
 ```
+
+> `YOLO_CONFIG_DIR` 显示"(未设置)"是正常的：`check_env.py` 只读环境变量，
+> 而 `setup_env()` 是在训练/评估脚本里才调用的。跑 `train.py` 时它会指向
+> 项目内的 `.yolo_config/`。
 
 > **待补充**：`yolo checks` 输出截图（任务书自检清单第 20 项）。
 
