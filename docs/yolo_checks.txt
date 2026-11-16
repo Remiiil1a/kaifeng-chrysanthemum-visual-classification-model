@@ -1,0 +1,29 @@
+﻿Ultralytics 8.4.210  Python-3.14.7 torch-2.14.1+cu130 CUDA:0 (NVIDIA GeForce RTX 5060 Laptop GPU, 8124MiB)
+Setup complete  (24 CPUs, 31.6 GB RAM, 670.2/924.4 GB disk)
+
+OS                     Windows-11-10.0.26100-SP0
+Environment            Windows
+Python                 3.14.7
+Install                git
+Path                   C:\Users\Administrator\Documents\kaifeng-chrysanthemum-visual-classification-model\.venv\Lib\site-packages\ultralytics
+RAM                    31.61 GB
+Disk                   670.2/924.4 GB
+CPU                    Intel Core i7-14650HX
+CPU count              24
+GPU                    NVIDIA GeForce RTX 5060 Laptop GPU, 8124MiB
+GPU count              1
+CUDA                   13.0
+
+numpy                   2.5.4>=1.23.0; platform_system != "Darwin"
+matplotlib              3.11.2>=3.3.0
+opencv-python           5.0.0.93!=4.13.0.90,>=4.7.0
+pillow                  13.0.0>=7.1.2
+requests                2.34.2>=2.23.0
+torch                   2.14.1+cu130>=1.8.0
+torch                   2.14.1+cu130!=2.4.0,>=1.8.0; sys_platform == "win32"
+torchvision             0.29.1+cu130>=0.9.0
+psutil                  7.2.2>=5.8.0
+polars                  2.1.0>=0.20.0
+nvidia-ml-py            13.615.71>=12.0.0
+ultralytics-thop        2.2.5>=2.2.4
+ultralytics-platform    0.1.111>=0.1.102; python_version >= "3.11"

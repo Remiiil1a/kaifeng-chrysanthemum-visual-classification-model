@@ -127,7 +127,7 @@
 
 ## 三、环境配置
 
-> 状态：**已在本机验证通过，GPU 训练管线跑通**（`yolo checks` 截图仍待补充）。
+> 状态：**已在本机验证通过，GPU 训练管线跑通**。`yolo checks` 输出见 3.6 节。
 
 ### 3.1 版本要求
 
@@ -240,7 +240,59 @@ OMP_NUM_THREADS     : 1
 > 而 `setup_env()` 是在训练/评估脚本里才调用的。跑 `train.py` 时它会指向
 > 项目内的 `.yolo_config/`。
 
-> **待补充**：`yolo checks` 输出截图（任务书自检清单第 20 项）。
+![check_env 输出](docs/images/check_env.png)
+
+### 3.6 `yolo checks` 输出
+
+任务书自检清单第 20 项要求保存 `yolo checks` 的输出。本机实际输出（2026-11-16）：
+
+```powershell
+$env:YOLO_CONFIG_DIR = "C:\Users\Administrator\Documents\kaifeng-chrysanthemum-visual-classification-model\.yolo_config"
+.venv\Scripts\yolo.exe checks
+```
+
+```
+Ultralytics 8.4.210  Python-3.14.7 torch-2.14.1+cu130 CUDA:0 (NVIDIA GeForce RTX 5060 Laptop GPU, 8124MiB)
+Setup complete  (24 CPUs, 31.6 GB RAM, 670.2/924.4 GB disk)
+
+OS                     Windows-11-10.0.26100-SP0
+Environment            Windows
+Python                 3.14.7
+Install                git
+Path                   ...\.venv\Lib\site-packages\ultralytics
+RAM                    31.61 GB
+Disk                   670.2/924.4 GB
+CPU                    Intel Core i7-14650HX
+CPU count              24
+GPU                    NVIDIA GeForce RTX 5060 Laptop GPU, 8124MiB
+GPU count              1
+CUDA                   13.0
+
+numpy                   2.5.4>=1.23.0; platform_system != "Darwin"
+matplotlib              3.11.2>=3.3.0
+opencv-python           5.0.0.93!=4.13.0.90,>=4.7.0
+pillow                  13.0.0>=7.1.2
+requests                2.34.2>=2.23.0
+torch                   2.14.1+cu130>=1.8.0
+torch                   2.14.1+cu130!=2.4.0,>=1.8.0; sys_platform == "win32"
+torchvision             0.29.1+cu130>=0.9.0
+psutil                  7.2.2>=5.8.0
+polars                  2.1.0>=0.20.0
+nvidia-ml-py            13.615.71>=12.0.0
+ultralytics-thop        2.2.5>=2.2.4
+ultralytics-platform    0.1.111>=0.1.102; python_version >= "3.11"
+```
+
+关键行解读：
+
+| 行 | 含义 |
+| --- | --- |
+| `torch-2.14.1+cu130` | 装的是 CUDA 13.0 构建，不是 CPU 版 |
+| `CUDA:0 (NVIDIA GeForce RTX 5060 Laptop GPU, 8124MiB)` | 框架已识别到显卡，编号 0，显存 8124 MiB |
+| `CUDA 13.0` | 运行时 CUDA 版本 |
+| `Setup complete` | 依赖全部满足，无缺失项 |
+
+完整输出另存为 [docs/yolo_checks.txt](docs/yolo_checks.txt)。
 
 ---
 
