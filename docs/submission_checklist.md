@@ -23,7 +23,7 @@
 | 17 | 训练脚本有 `if __name__ == "__main__":` 保护块 | 自动 | | 已具备 |
 | 18 | train.py 顶部有 CONFIG 字典，超参集中可改 | 自动 | | 已具备 |
 | 19 | 环境变量设置方式已写入 README（含具体命令） | 手工 | | README 第 3.4 节 |
-| 20 | yolo checks 的输出已截图保存 | 手工 | 是 | README 3.6 节 + `docs/yolo_checks.txt` |
+| 20 | yolo checks 的输出已截图保存 | 手工 | 是 | README 3.6 节截图 + `docs/yolo_checks.txt` + `yolo_checks.ps1` |
 | 21 | 训练日志（控制台输出）已保存为 train_log.txt | 手工 | | README 第 4.3 节命令 |
 | 22 | 四张图表齐全：results.png、confusion_matrix.png、confusion_matrix_normalized.png、val_batch0_pred.jpg | 手工 | | 训练时 `plots=True` 自动生成 |
 | 23 | 三个集合的 top1 准确率均已记录到 eval_summary.json | 自动 | | `evaluate.py` |

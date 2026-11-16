@@ -240,16 +240,19 @@ OMP_NUM_THREADS     : 1
 > 而 `setup_env()` 是在训练/评估脚本里才调用的。跑 `train.py` 时它会指向
 > 项目内的 `.yolo_config/`。
 
-![check_env 输出](docs/images/check_env.png)
-
 ### 3.6 `yolo checks` 输出
 
-任务书自检清单第 20 项要求保存 `yolo checks` 的输出。本机实际输出（2026-11-16）：
+任务书自检清单第 20 项要求保存 `yolo checks` 的输出。运行脚本见
+[yolo_checks.ps1](yolo_checks.ps1)：
 
 ```powershell
 $env:YOLO_CONFIG_DIR = "C:\Users\Administrator\Documents\kaifeng-chrysanthemum-visual-classification-model\.yolo_config"
 .venv\Scripts\yolo.exe checks
 ```
+
+![yolo checks 输出](docs/images/yolo_checks.png)
+
+本机实际输出（2026-11-16）：
 
 ```
 Ultralytics 8.4.210  Python-3.14.7 torch-2.14.1+cu130 CUDA:0 (NVIDIA GeForce RTX 5060 Laptop GPU, 8124MiB)
