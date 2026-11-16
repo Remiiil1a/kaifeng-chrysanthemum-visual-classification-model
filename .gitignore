@@ -19,12 +19,15 @@ env/
 *.tmp
 
 # ---------- 模型权重 ----------
-# 预训练权重与训练产物体积大，不进版本库；
-# 交付时按任务书 15.2 节把 best.pt 放进 results/runs/chrys_yolo26n/weights/
+# 预训练权重（yolo26n-cls.pt 等）体积大且可重新下载，不进版本库。
 *.pt
 *.onnx
 *.engine
 *.torchscript
+
+# 例外：训练产出的 best.pt 要随交付包提交（任务书 15.2 节，3—6 MB 可接受）。
+# last.pt 是断点续训用的中间产物，不需要。
+!results/runs/*/weights/best.pt
 
 # ---------- 数据集图片 ----------
 # 默认不把照片纳入版本库：450 张 × 300KB~2MB 会让仓库膨胀到数百 MB，

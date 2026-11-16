@@ -2,10 +2,10 @@ task: classify
 mode: train
 model: yolo26n-cls.pt
 data: C:\Users\Administrator\Documents\kaifeng-chrysanthemum-visual-classification-model
-epochs: 1
+epochs: 50
 time: null
 patience: 15
-batch: 16
+batch: 32
 imgsz: 224
 save: true
 save_period: -1
