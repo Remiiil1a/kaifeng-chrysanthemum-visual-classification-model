@@ -30,21 +30,12 @@ env/
 !results/runs/*/weights/best.pt
 
 # ---------- 数据集图片 ----------
-# 默认不把照片纳入版本库：450 张 × 300KB~2MB 会让仓库膨胀到数百 MB，
-# 而任务书的交付物是 ZIP 压缩包，不是 git 仓库。
-# 目录结构靠各级 .gitkeep 保留，clone 后即可直接放图。
-# 若确实需要把图片纳入版本库，删除下面三行即可。
-train/**/*.jpg
-val/**/*.jpg
-test/**/*.jpg
-train/**/*.jpeg
-val/**/*.jpeg
-test/**/*.jpeg
-train/**/*.png
-val/**/*.png
-test/**/*.png
+# 480 张图（438 MB）纳入版本库，这样同伴 clone 后直接就有完整数据集，
+# 不必再单独传图。代价是仓库体积较大，首次 clone 较慢。
+# 注意：GitHub 单文件上限 100 MB，单张图约 0.9 MB，无风险。
 
-# 原始照片库：仅作本地备份，永不入库
+# 原始照片库：与 train/val/test 是同一批图的重复备份（同样 438 MB），
+# 入库会让仓库体积翻倍，因此仍然排除。需要原图时从数据集目录取。
 _raw/*
 !_raw/.gitkeep
 
